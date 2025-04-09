@@ -1,24 +1,24 @@
-import { FirebaseApp, initializeApp } from "firebase/app"
-import { Auth, connectAuthEmulator, getAuth } from "firebase/auth"
+import { FirebaseApp, initializeApp } from "firebase/app";
+import { Auth, getAuth } from "firebase/auth";
 import {
   Firestore,
-  connectFirestoreEmulator,
-  getFirestore,
-} from "firebase/firestore"
+  getFirestore
+} from "firebase/firestore";
 import {
   Functions,
-  connectFunctionsEmulator,
-  getFunctions,
-} from "firebase/functions"
+  getFunctions
+} from "firebase/functions";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-}
+  apiKey: "AIzaSyCFN1sC8eHZl8OHQEisUU2JOPNW-4Ywb_Q",
+  authDomain: "mukiz-231605.firebaseapp.com",
+  databaseURL: "https://mukiz-231605.firebaseio.com",
+  projectId: "mukiz-231605",
+  storageBucket: "mukiz-231605.firebasestorage.app",
+  messagingSenderId: "150287454176",
+  appId: "1:150287454176:web:2e2ce0b5f8419d78e9a585",
+  measurementId: "G-N2CZ06HG1M"
+};
 
 const modules = (() => {
   try {
@@ -26,13 +26,6 @@ const modules = (() => {
     const auth = getAuth(app)
     const firestore = getFirestore(app)
     const functions = getFunctions(app)
-
-    if (process.env.NODE_ENV !== "production") {
-      const currentHost = window.location.hostname
-      connectAuthEmulator(auth, `http://${currentHost}:9099`)
-      connectFirestoreEmulator(firestore, currentHost, 8080)
-      connectFunctionsEmulator(functions, currentHost, 5001)
-    }
 
     return {
       app,

@@ -1,10 +1,8 @@
 import styled from "@emotion/styled"
-import Forum from "mdi-react/ForumIcon"
-import Help from "mdi-react/HelpCircleIcon"
-import Settings from "mdi-react/SettingsIcon"
 import { observer } from "mobx-react-lite"
 import { CSSProperties, FC, useCallback } from "react"
 import { getPlatform, isRunningInElectron } from "../../helpers/platform"
+import { useAuth } from "../../hooks/useAuth"
 import { useStores } from "../../hooks/useStores"
 import ArrangeIcon from "../../images/icons/arrange.svg"
 import PianoIcon from "../../images/icons/piano.svg"
@@ -14,6 +12,7 @@ import { Localized } from "../../localize/useLocalization"
 import { Tooltip } from "../ui/Tooltip"
 import { EditMenuButton } from "./EditMenuButton"
 import { FileMenuButton } from "./FileMenuButton"
+import { SaveButton } from "./SaveButton"
 import { UserButton } from "./UserButton"
 
 const Container = styled.div`
@@ -84,6 +83,7 @@ export const IconStyle: CSSProperties = {
 
 export const Navigation: FC = observer(() => {
   const { rootViewStore, router } = useStores()
+  const { user } = useAuth()
 
   const onClickPianoRollTab = useCallback(() => {
     router.path = "/track"
@@ -168,38 +168,7 @@ export const Navigation: FC = observer(() => {
       </Tooltip>
 
       <FlexibleSpacer />
-
-      {!isRunningInElectron() && (
-        <>
-          <Tab onClick={onClickSettings}>
-            <Settings style={IconStyle} />
-            <TabTitle>
-              <Localized name="settings" />
-            </TabTitle>
-          </Tab>
-
-          <Tab onClick={onClickHelp}>
-            <Help style={IconStyle} />
-            <TabTitle>
-              <Localized name="help" />
-            </TabTitle>
-          </Tab>
-
-          <Tab>
-            <Forum style={IconStyle} />
-            <TabTitle>
-              <a
-                href="https://discord.gg/XQxzNdDJse"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Discord
-              </a>
-            </TabTitle>
-          </Tab>
-        </>
-      )}
-
+      {user && <SaveButton />}
       <UserButton />
     </Container>
   )

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "signal-9546d"
-  }
+    "default": "signal-9546d",
+    "midi-builder": "mukiz-231605"
+  },
+  "targets": {},
+  "etags": {}
 }
