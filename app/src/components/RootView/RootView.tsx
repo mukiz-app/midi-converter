@@ -18,8 +18,6 @@ import { SettingDialog } from "../SettingDialog/SettingDialog"
 import { SignInDialog } from "../SignInDialog/SignInDialog"
 import { TempoEditor } from "../TempoGraph/TempoEditor"
 import { TransportPanel } from "../TransportPanel/TransportPanel"
-import { DeleteAccountDialog } from "../UserSettingsDialog/DeleteAccountDialog"
-import { UserSettingsDialog } from "../UserSettingsDialog/UserSettingsDialog"
 import { DropZone } from "./DropZone"
 
 const Container = styled.div`
@@ -71,7 +69,5 @@ export const RootView: FC = () => (
     <OnInit />
     <OnBeforeUnload />
     <PublishDialog />
-    <UserSettingsDialog />
-    <DeleteAccountDialog />
   </>
 )

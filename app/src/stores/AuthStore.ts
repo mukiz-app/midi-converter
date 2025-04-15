@@ -28,23 +28,10 @@ export class AuthStore {
           subscribe = userRepository.observeCurrentUser((user) => {
             this.user = user
           })
-          await this.createProfileIfNeeded(user)
         }
       })
     } catch (e) {
       console.warn(e)
-    }
-  }
-
-  private async createProfileIfNeeded(authUser: AuthUser) {
-    // Create user profile if not exists
-    const user = await this.userRepository.getCurrentUser()
-    if (user === null) {
-      const newUserData = {
-        name: authUser.displayName ?? "",
-        bio: "",
-      }
-      await this.userRepository.create(newUserData)
     }
   }
 

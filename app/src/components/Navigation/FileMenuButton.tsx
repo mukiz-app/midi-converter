@@ -9,7 +9,6 @@ import { hasFSAccess } from "../../actions/file"
 import { useStores } from "../../hooks/useStores"
 import { Localized } from "../../localize/useLocalization"
 import { Menu, MenuDivider, MenuItem, SubMenu } from "../ui/Menu"
-import { CloudFileMenu } from "./CloudFileMenu"
 import { FileMenu } from "./FileMenu"
 import { LegacyFileMenu } from "./LegacyFileMenu"
 import { Tab } from "./Navigation"
@@ -53,11 +52,9 @@ export const FileMenuButton: FC = observer(() => {
         </Tab>
       }
     >
-      {user === null && hasFSAccess && <FileMenu close={handleClose} />}
+      {hasFSAccess && <FileMenu close={handleClose} />}
 
-      {user === null && !hasFSAccess && <LegacyFileMenu close={handleClose} />}
-
-      {user && <CloudFileMenu close={handleClose} />}
+      {!hasFSAccess && <LegacyFileMenu close={handleClose} />}
 
       {user === null && (
         <>

@@ -26,24 +26,6 @@ export const UserButton: FC = observer(() => {
     setOpen(false)
   }
 
-  const onClickSignOut = async () => {
-    await auth.signOut()
-    setOpen(false)
-  }
-
-  const onClickProfile = () => {
-    if (user !== null) {
-      window.open(`https://signal.vercel.app/users/${user.uid}`)
-    }
-    setOpen(false)
-  }
-
-  const onClickUserSettings = () => {
-    rootViewStore.openUserSettingsDialog = true
-  }
-
-  const theme = useTheme()
-  const ref = useRef<HTMLDivElement>(null)
 
   if (user === null) {
     return (
@@ -55,36 +37,4 @@ export const UserButton: FC = observer(() => {
       </Tab>
     )
   }
-
-  return (
-    <Menu
-      open={open}
-      onOpenChange={setOpen}
-      trigger={
-        <Tab ref={ref}>
-          <img
-            style={{
-              ...IconStyle,
-              borderRadius: "0.65rem",
-              border: `1px solid ${theme.dividerColor}`,
-            }}
-            src={user.photoURL ?? undefined}
-          />
-          <TabTitle>{user.displayName}</TabTitle>
-        </Tab>
-      }
-    >
-      <MenuItem onClick={onClickProfile}>
-        <Localized name="profile" />
-      </MenuItem>
-
-      <MenuItem onClick={onClickUserSettings}>
-        <Localized name="user-settings" />
-      </MenuItem>
-
-      <MenuItem onClick={onClickSignOut}>
-        <Localized name="sign-out" />
-      </MenuItem>
-    </Menu>
-  )
 })

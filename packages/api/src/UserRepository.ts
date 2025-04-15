@@ -1,4 +1,4 @@
-import { Auth, deleteUser } from "firebase/auth"
+import { Auth } from "firebase/auth"
 import {
   Firestore,
   FirestoreDataConverter,
@@ -10,8 +10,7 @@ import {
   getDocs,
   onSnapshot,
   query,
-  runTransaction,
-  where,
+  where
 } from "firebase/firestore"
 import { AuthUser, IUserRepository, User } from "./IUserRepository.js"
 
@@ -23,15 +22,14 @@ export const createUserRepository = (
 export interface FirestoreUser {
   name: string
   bio: string
-  createdAt: Timestamp
-  updatedAt: Timestamp
+  date_created: Timestamp
 }
 
 class UserRepository implements IUserRepository {
   constructor(
     private readonly firestore: Firestore,
     private readonly auth: Auth,
-  ) {}
+  ) { }
   private get userCollection() {
     return collection(this.firestore, "users").withConverter(userConverter)
   }
@@ -41,37 +39,6 @@ class UserRepository implements IUserRepository {
       throw new Error("You must be logged in to get the current user")
     }
     return doc(this.userCollection, this.auth.currentUser.uid)
-  }
-
-  async create(data: Pick<User, "name" | "bio">): Promise<void> {
-    await runTransaction(this.firestore, async (transaction) => {
-      transaction.set(this.userRef, {
-        name: data.name,
-        bio: data.bio,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      })
-    })
-  }
-
-  async update(data: Pick<User, "name" | "bio">): Promise<void> {
-    await runTransaction(this.firestore, async (transaction) => {
-      transaction.update(this.userRef, {
-        name: data.name,
-        bio: data.bio,
-        updatedAt: Timestamp.now(),
-      })
-    })
-  }
-
-  async delete(): Promise<void> {
-    if (this.auth.currentUser === null) {
-      throw new Error("You must be logged in to delete the current user")
-    }
-    await runTransaction(this.firestore, async (transaction) => {
-      transaction.delete(this.userRef)
-    })
-    deleteUser(this.auth.currentUser)
   }
 
   async getCurrentUser() {
@@ -107,7 +74,7 @@ class UserRepository implements IUserRepository {
       })
     } catch (e) {
       console.warn(e)
-      return () => {}
+      return () => { }
     }
   }
 
@@ -122,9 +89,7 @@ class UserRepository implements IUserRepository {
 export const convertUser = (id: string, data: FirestoreUser): User => ({
   id: id,
   name: data.name,
-  bio: data.bio,
-  createdAt: data.createdAt.toDate(),
-  updatedAt: data.updatedAt.toDate(),
+  createdAt: data.date_created.toDate(),
 })
 
 const toUser = (snapshot: QueryDocumentSnapshot<FirestoreUser>): User => {
